@@ -6,13 +6,13 @@ PAL = px.colors.qualitative.Bold
 
 @st.cache_data
 def load(region):
-    D = json.load(open(f"data/{region}.json"))
+    D = json.load(open(f"{region}.json"))
     df = pd.DataFrame(D["nodes"], columns=D["node_fields"])
     df["role"] = df.role.map(lambda i: D["role_codes"][i] or "None")
     df["community"] = df.group.map(lambda g: D["groups"][g]["label"])
     return D, df
 
-regions = sorted(os.path.basename(p)[:-5] for p in glob.glob("data/*.json"))
+regions = sorted(os.path.basename(p)[:-5] for p in glob.glob("*.json"))
 region = st.sidebar.selectbox("Network", regions)
 D, df = load(region); P = D["properties"]
 color_by = st.sidebar.radio("Color by", ["community", "partner", "mature", "role"])
